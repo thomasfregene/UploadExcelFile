@@ -111,10 +111,6 @@ namespace UploadExcelFile.Controllers
 
                             });
 
-                            //if (row.Any)
-                            //{
-
-                            //}
 
                             //ADO>NET CODE connection string
                             if (firstName != string.Empty && lastName != string.Empty && email != string.Empty && telephone != string.Empty && mobile != string.Empty && companyId == 7)
@@ -122,10 +118,7 @@ namespace UploadExcelFile.Controllers
                                 this.PostToDatabase(firstName, lastName, email, telephone, mobile, companyId);
                                 TempData["Message2"] = "Upload Successful";
                             }
-                            //else
-                            //{
-                            //    TempData["Message"] = "Failed to Upload File Check Input Values";
-                            //}
+                            
                         }
 
                     }
