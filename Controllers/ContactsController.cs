@@ -57,24 +57,46 @@ namespace UploadExcelFile.Controllers
 
                             //Checking then first Name field
                             if (firstName == string.Empty)
-                                TempData["Message"] = "First Name Field can not be Empty";
+                            {
+                                
+                                return View("Error", TempData["Message"] = "First Name Field can not be Empty");
+                            }
+
+                               
 
                             //checking the Last Name field
                             if (lastName == string.Empty)
-                                TempData["Message"] = "Last Name Field can not be Empty";
+                            {
+                                
+                                return View("Error", TempData["Message"] = "Last Name Field can not be Empty");
+                            }
+                                
 
 
                             //checking for email field
                             if (email == string.Empty)
-                                TempData["Message"] = "Email Field can not be Empty";
+                            {
+                                
+                                return View("Error", TempData["Message"] = "Email Field can not be Empty");
+
+                            }
+                                
 
                             //checking for Mobile
                             if (mobile == string.Empty)
-                                TempData["Message"] = "Mobile Field can not be Empty";
+                            {
+                                
+                                return View("Error", TempData["Message"] = "Mobile Field can not be Empty");
+                            }
+                                
 
                             //checking for Valid Company Id
                             if (companyId != 7)
-                                TempData["Message"] = "Invalid COmpany ID";
+                            {
+                                return View("Error", TempData["Message"] = "Invalid COmpany ID");
+                            }
+                                
+                            
 
 
                             contact.Add(new Contact
@@ -89,6 +111,11 @@ namespace UploadExcelFile.Controllers
 
                             });
 
+                            //if (row.Any)
+                            //{
+
+                            //}
+
                             //ADO>NET CODE connection string
                             if (firstName != string.Empty && lastName != string.Empty && email != string.Empty && telephone != string.Empty && mobile != string.Empty && companyId == 7)
                             {
@@ -100,6 +127,7 @@ namespace UploadExcelFile.Controllers
                             //    TempData["Message"] = "Failed to Upload File Check Input Values";
                             //}
                         }
+
                     }
                 }
                 catch (Exception ex)
