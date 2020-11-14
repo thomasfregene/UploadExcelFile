@@ -89,7 +89,16 @@ namespace UploadExcelFile.Controllers
 
                             });
 
-                            this.PostToDatabase(firstName, lastName, email,telephone, mobile, companyId);
+                            //ADO>NET CODE connection string
+                            if (firstName != string.Empty && lastName != string.Empty && email != string.Empty && telephone != string.Empty && mobile != string.Empty && companyId == 7)
+                            {
+                                this.PostToDatabase(firstName, lastName, email, telephone, mobile, companyId);
+                                TempData["Message2"] = "Upload Successful";
+                            }
+                            //else
+                            //{
+                            //    TempData["Message"] = "Failed to Upload File Check Input Values";
+                            //}
                         }
                     }
                 }
@@ -103,6 +112,7 @@ namespace UploadExcelFile.Controllers
             return View(contact);
         }
 
+        
         private void PostToDatabase(string firstName,
             string lastName, string email, string telephone, string mobile, int companyID)
         {
@@ -158,26 +168,8 @@ namespace UploadExcelFile.Controllers
                 cmd.ExecuteNonQuery();
 
             }
-            //ADO>NET CODE connection string
-            
-            
-
+          
         }
 
-        private void CreateContact(Contact contact)
-        {
-            string connString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
-            using (SqlConnection con = new SqlConnection(connString))
-            {
-                SqlCommand cmd = new SqlCommand("spSaveContact", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-
-
-                con.Open();
-                cmd.ExecuteNonQuery();
-            }
-
-        }
     }
 }
