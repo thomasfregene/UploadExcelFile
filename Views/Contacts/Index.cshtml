@@ -1,22 +1,23 @@
 ﻿@using UploadExcelFile.Models
-@model  IEnumerable<Contact>
+@model  List<ContactVM>
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-controller="Contacts" asp-action="Index" method="Post" enctype="multipart/form-data">
-    <input type="file" name="postedFile" />
-    <hr />
-    <input type="submit" value="import" />
-</form>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
 
 <h3 style="color: red;"><strong>@TempData["Message"]</strong></h3>
 <h3 style="color: green;"><strong>@TempData["Message2"]</strong></h3>
+@{
+    string display = "Valid";
 
+    bool displayImport = true;
+}
 @if (Model.Count() > 0)
 {
     <hr />
-    <table cellpadding="0" cellspacing="0" border="1">
+    <table class="table table-bordered" cellpadding="0" cellspacing="0" border="1">
         <tr>
             <td>FirstName</td>
             <td>LastName</td>
@@ -24,9 +25,10 @@
             <td>Telephone</td>
             <td>Mobile</td>
             <td>CompanyID</td>
+            <td>Message</td>
         </tr>
 
-        @foreach (Contact contact in Model)
+        @foreach (ContactVM contact in Model)
         {
             <tr>
                 <td>@contact.FirstName</td>
@@ -35,7 +37,47 @@
                 <td>@contact.Telephone</td>
                 <td>@contact.Mobile</td>
                 <td>@contact.CompanyID</td>
+                <td style="color:red">@contact.Message</td>
             </tr>
+
+
         }
     </table>
+
+
+
+    foreach (ContactVM conntact in Model)
+    {
+
+        display = conntact.Status;
+    }
+
+    if (display != "Invalid")
+    {
+        <button class="btn btn-default">
+            @Html.ActionLink("Submit", "CreateContact", "Contacts")
+        </button>
+
+        displayImport = false;
+    }
+
+
 }
+<form asp-controller="Contacts" asp-action="Index" method="Post" enctype="multipart/form-data">
+
+    @if (displayImport == true)
+    {
+        <input type="file" name="postedFile" />
+        <hr />
+        <input type="submit" value="import" class="btn btn-primary" />
+        // display = "Valid";
+
+    }
+    @if (display == "Invalid")
+    {
+        <h3 style="color:red">Please fill missing field and re-import file</h3>
+    }
+
+
+</form>
+

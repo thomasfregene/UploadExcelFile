@@ -1,0 +1,35 @@
+﻿@using UploadExcelFile.Models
+@model  List<ContactVM>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<hr />
+<table cellpadding="0" cellspacing="0" border="1" class="table table-bordered">
+    <tr>
+        <td>FirstName</td>
+        <td>LastName</td>
+        <td>Email</td>
+        <td>Telephone</td>
+        <td>Mobile</td>
+        <td>CompanyID</td>
+    </tr>
+
+    @foreach (ContactVM contact in Model)
+    {
+        <tr>
+            <td>@contact.FirstName</td>
+            <td>@contact.LastName</td>
+            <td>@contact.Email</td>
+            <td>@contact.Telephone</td>
+            <td>@contact.Mobile</td>
+            <td>@contact.CompanyID</td>
+        </tr>
+
+
+    }
+</table>
+<button class="btn btn-default">
+    @Html.ActionLink("Back To Home", "Index", "Contacts")
+</button>
