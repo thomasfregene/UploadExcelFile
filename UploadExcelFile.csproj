@@ -250,6 +250,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\ContactBatch.cs" />
     <Compile Include="Models\ContactDb.cs" />
     <Compile Include="Models\ContactVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

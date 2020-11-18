@@ -64,6 +64,7 @@ namespace UploadExcelFile.Models
                         };
                         cmd.Parameters.Add(paramCompanyID);
 
+
                         if (con.State == ConnectionState.Closed)
                         {
                             con.Open();

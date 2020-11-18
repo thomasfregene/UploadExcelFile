@@ -19,7 +19,7 @@ namespace UploadExcelFile.Models
         [Required]
         public string Mobile { get; set; }
         [Required]
-        public int? CompanyID { get; set; }
+        public int CompanyID { get; set; }
         public string Message { get; set; }
         public string Status { get; set; } 
 
@@ -32,5 +32,7 @@ namespace UploadExcelFile.Models
         public string CustomField1 { get; set; }
         public string CustomField2 { get; set; }
         public DateTime CustomDate { get; set; }
+
+
     }
 }

@@ -59,7 +59,7 @@ namespace UploadExcelFile.Controllers
                                 Email = row.Split(',')[2],
                                 Telephone = row.Split(',')[3],
                                 Mobile = row.Split(',')[4],
-                                CompanyID = Convert.ToInt32(row.Split(',')[5])
+                                CompanyID = Convert.ToInt32(row.Split(',')[5]),
                             };
 
                             //Checking then first Name field
