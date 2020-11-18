@@ -19,7 +19,7 @@ namespace UploadExcelFile.Models
         [Required]
         public string Mobile { get; set; }
         [Required]
-        public int CompanyID { get; set; }
+        public int? CompanyID { get; set; }
         public string Message { get; set; }
         public string Status { get; set; } 
 

@@ -17,62 +17,74 @@ namespace UploadExcelFile.Models
             {
                 foreach (var contact in contacts)
                 {
-                    SqlCommand cmd = new SqlCommand("spCreateContact", con);
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    SqlParameter paramFirstName = new SqlParameter
+                    try
                     {
-                        ParameterName = "@FirstName",
-                        Value = contact.FirstName
-                    };
-                    cmd.Parameters.Add(paramFirstName);
+                        SqlCommand cmd = new SqlCommand("spCreateContact", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
 
-                    SqlParameter paramLastName = new SqlParameter
-                    {
-                        ParameterName = "@LastName",
-                        Value = contact.LastName
-                    };
-                    cmd.Parameters.Add(paramLastName);
+                        SqlParameter paramFirstName = new SqlParameter
+                        {
+                            ParameterName = "@FirstName",
+                            Value = contact.FirstName
+                        };
+                        cmd.Parameters.Add(paramFirstName);
 
-                    SqlParameter paramEmail = new SqlParameter
-                    {
-                        ParameterName = "@Email",
-                        Value = contact.Email
-                    };
-                    cmd.Parameters.Add(paramEmail);
+                        SqlParameter paramLastName = new SqlParameter
+                        {
+                            ParameterName = "@LastName",
+                            Value = contact.LastName
+                        };
+                        cmd.Parameters.Add(paramLastName);
 
-                    SqlParameter paramTelephone = new SqlParameter
-                    {
-                        ParameterName = "@Telephone",
-                        Value = contact.Telephone
-                    };
-                    cmd.Parameters.Add(paramTelephone);
+                        SqlParameter paramEmail = new SqlParameter
+                        {
+                            ParameterName = "@Email",
+                            Value = contact.Email
+                        };
+                        cmd.Parameters.Add(paramEmail);
 
-                    SqlParameter paramMobile = new SqlParameter
-                    {
-                        ParameterName = "@Mobile",
-                        Value = contact.Mobile
-                    };
-                    cmd.Parameters.Add(paramMobile);
+                        SqlParameter paramTelephone = new SqlParameter
+                        {
+                            ParameterName = "@Telephone",
+                            Value = contact.Telephone
+                        };
+                        cmd.Parameters.Add(paramTelephone);
 
-                    SqlParameter paramCompanyID = new SqlParameter
-                    {
-                        ParameterName = "@CompanyID",
-                        Value = contact.CompanyID
-                    };
-                    cmd.Parameters.Add(paramCompanyID);
+                        SqlParameter paramMobile = new SqlParameter
+                        {
+                            ParameterName = "@Mobile",
+                            Value = contact.Mobile
+                        };
+                        cmd.Parameters.Add(paramMobile);
 
-                    if (con.State == ConnectionState.Closed)
-                    {
-                        con.Open();
+                        SqlParameter paramCompanyID = new SqlParameter
+                        {
+                            ParameterName = "@CompanyID",
+                            Value = contact.CompanyID
+                        };
+                        cmd.Parameters.Add(paramCompanyID);
+
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.ExecuteNonQuery();
                     }
-                    cmd.ExecuteNonQuery();
+                    catch (Exception ex)
+                    {
 
+                        throw;
+                    }
+                    finally
+                    {
+                        if (con.State == ConnectionState.Open)
+                        {
+                            con.Close();
+                        }
+                    }
                 }
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
+               
+                
                 
             }
             

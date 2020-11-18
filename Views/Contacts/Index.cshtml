@@ -12,6 +12,8 @@
     string display = "Valid";
 
     bool displayImport = true;
+
+
 }
 @if (Model.Count() > 0)
 {
@@ -46,10 +48,10 @@
 
 
 
-    foreach (ContactVM conntact in Model)
+    foreach (ContactVM contact in Model)
     {
 
-        display = conntact.Status;
+        display = contact.Status;
     }
 
     if (display != "Invalid")
