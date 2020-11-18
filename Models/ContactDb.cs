@@ -62,12 +62,20 @@ namespace UploadExcelFile.Models
                     };
                     cmd.Parameters.Add(paramCompanyID);
 
-                    con.Open();
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                    }
                     cmd.ExecuteNonQuery();
 
                 }
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+                
             }
-
+            
         }
     }
 }

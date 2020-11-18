@@ -66,8 +66,7 @@ namespace UploadExcelFile.Controllers
                             if (contactVM.FirstName == string.Empty)
                             {
                                 contactVM.Status = "Inavlid";
-                                contactVM.Message = "First Name Field is required";
-                                //return View("Error", TempData["Message"] = "First Name Field can not be Empty");
+                                contactVM.Message = "First Name Field is required ";
                             }
 
                                
@@ -76,8 +75,7 @@ namespace UploadExcelFile.Controllers
                             if (contactVM.LastName == string.Empty)
                             {
                                 contactVM.Status = "Invalid";
-                                contactVM.Message = "Last Name Field is required";
-                                //return View("Error", TempData["Message"] = "Last Name Field can not be Empty");
+                                contactVM.Message = "Last Name Field is required ";
                             }
                                 
 
@@ -86,24 +84,30 @@ namespace UploadExcelFile.Controllers
                             if (contactVM.Email == string.Empty)
                             {
                                 contactVM.Status = "Invalid";
-                                //return View("Error", TempData["Message"] = "Email Field can not be Empty");
-
+                                contactVM.Message = "Email Field is required ";
                             }
-                                
+
+                            //checking for Telephone
+                            if (contactVM.Telephone == string.Empty)
+                            {
+                                contactVM.Status = "Invalid";
+                                contactVM.Message = "Telephone Field is required ";
+                            }
 
                             //checking for Mobile
                             if (contactVM.Mobile == string.Empty)
                             {
                                 contactVM.Status = "Invalid";
-                                //return View("Error", TempData["Message"] = "Mobile Field can not be Empty");
+                                contactVM.Message = "Mobile Field is required ";
                             }
                                 
 
                             //checking for Valid Company Id
+                            //needs improvement
                             if (contactVM.CompanyID != 7)
                             {
                                 contactVM.Status = "Invalid";
-                                //return View("Error", TempData["Message"] = "Invalid COmpany ID");
+                                contactVM.Message = "CompanyID Field Must be same for All Entries";
                             }
 
 
@@ -120,20 +124,18 @@ namespace UploadExcelFile.Controllers
                     TempData["Message"] = "Something went wrong " + ex.Message;
                 }
             }
+            
+            Session.Clear();
             Session["Upload"] = contact;
             return View(contact);
         }
 
-        //[HttpGet]
-        //public ActionResult CreateContact()
-        //{
-        //    return View(new List<Contact>());
-        //}
-
+       
         [HttpGet]
         [WebMethod(EnableSession = true)]
         public ActionResult CreateContact()
         {
+
             List<ContactVM> contacts = new List<ContactVM>();
             contacts = (List<ContactVM>)Session["Upload"];
             ContactDb.PostToDatabase(contacts);
