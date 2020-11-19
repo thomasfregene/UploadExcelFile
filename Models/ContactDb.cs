@@ -10,7 +10,79 @@ namespace UploadExcelFile.Models
 {
     public class ContactDb
     {
-        public static void PostToDatabase(List<ContactVM> contacts)
+        public static int GetBatchID(ContactBatch contactBatch)
+        {
+            string conString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            int batchID;
+            using (SqlConnection con = new SqlConnection(conString))
+            {
+                try
+                {
+
+                    SqlCommand cmd = new SqlCommand("AddBatchReturnIDWithOutput", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlParameter paramBatchName = new SqlParameter
+                    {
+                        ParameterName = "@BatchName",
+                        Value = contactBatch.BatchName
+                    };
+                    cmd.Parameters.Add(paramBatchName);
+
+                    SqlParameter paramDateCreated = new SqlParameter
+                    {
+                        ParameterName = "@DateCreated",
+                        Value = contactBatch.DateCreated
+                    };
+                    cmd.Parameters.Add(paramDateCreated);
+
+                    SqlParameter paramCreatedBy = new SqlParameter
+                    {
+                        ParameterName = "@CreatedBy",
+                        Value = contactBatch.CreatedBy,
+                        //SqlDbType = SqlDbType.DateTime,
+                    };
+                    cmd.Parameters.Add(paramCreatedBy);
+
+                    SqlParameter paramDateModified = new SqlParameter
+                    {
+                        ParameterName = "@DateModified",
+                        Value = contactBatch.DateModified
+                    };
+                    cmd.Parameters.Add(paramDateModified);
+
+                    SqlParameter paramStatus = new SqlParameter
+                    {
+                        ParameterName = "@Status",
+                        Value = contactBatch.Status
+                    };
+                    cmd.Parameters.Add(paramStatus);
+
+                    //output param(New Code)
+                    SqlParameter outputParam = new SqlParameter();
+                    outputParam.ParameterName = "@BatchID";
+                    outputParam.Direction = ParameterDirection.Output;
+                    outputParam.SqlDbType = SqlDbType.Int;
+                    cmd.Parameters.Add(outputParam);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    batchID = Convert.ToInt32(cmd.Parameters["@BatchID"].Value);
+                }
+                catch (Exception Ex)
+                {
+
+                    throw Ex;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+            return batchID;
+        }
+
+        public static void PostToDatabase(List<ContactVM> contacts, int batchId)
         {
             string connString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
             using (SqlConnection con = new SqlConnection(connString))
@@ -63,6 +135,13 @@ namespace UploadExcelFile.Models
                             Value = contact.CompanyID
                         };
                         cmd.Parameters.Add(paramCompanyID);
+
+                        SqlParameter paramBatchID = new SqlParameter
+                        {
+                            ParameterName = "@BatchID",
+                            Value = batchId
+                        };
+                        cmd.Parameters.Add(paramBatchID);
 
 
                         if (con.State == ConnectionState.Closed)

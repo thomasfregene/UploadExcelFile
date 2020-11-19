@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -69,7 +70,7 @@ namespace UploadExcelFile.Controllers
                                 contactVM.Message = "First Name Field is required ";
                             }
 
-                               
+
 
                             //checking the Last Name field
                             if (contactVM.LastName == string.Empty)
@@ -77,7 +78,7 @@ namespace UploadExcelFile.Controllers
                                 contactVM.Status = "Invalid";
                                 contactVM.Message = "Last Name Field is required ";
                             }
-                                
+
 
 
                             //checking for email field
@@ -100,7 +101,7 @@ namespace UploadExcelFile.Controllers
                                 contactVM.Status = "Invalid";
                                 contactVM.Message = "Mobile Field is required ";
                             }
-                                
+
 
                             //checking for Valid Company Id
                             //needs improvement
@@ -115,7 +116,7 @@ namespace UploadExcelFile.Controllers
                         }
 
                     }
-                    
+
 
                 }
                 catch (Exception ex)
@@ -124,21 +125,29 @@ namespace UploadExcelFile.Controllers
                     TempData["Message"] = "Something went wrong " + ex.Message;
                 }
             }
-            
+
             Session.Clear();
             Session["Upload"] = contact;
             return View(contact);
         }
 
-       
+
         [HttpGet]
         [WebMethod(EnableSession = true)]
         public ActionResult CreateContact()
         {
-
+            DateTime myDateTime = DateTime.Now;
+            string sqlformattedDate = myDateTime.ToString("yyyy-MM-dd hh:mm:ss.fff");
+            ContactBatch batch = new ContactBatch
+            {
+                BatchName = $"Upload" ,
+                CreatedBy = "System",
+                DateCreated = Convert.ToDateTime(sqlformattedDate)
+            };
+            int batchId = ContactDb.GetBatchID(batch);
             List<ContactVM> contacts = new List<ContactVM>();
             contacts = (List<ContactVM>)Session["Upload"];
-            ContactDb.PostToDatabase(contacts);
+            ContactDb.PostToDatabase(contacts, batchId);
             return View(contacts);
         }
 
