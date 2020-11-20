@@ -1,0 +1,35 @@
+﻿@using UploadExcelFile.Models
+@model List<ContactBatch>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+@if (Model.Count() > 0)
+{
+    <hr />
+    <table class="table table-bordered">
+        <tr>
+            <td>Batch Name</td>
+            <td>CreatedBy</td>
+            <td>DateCreated</td>
+            <td>Action</td>
+            
+        </tr>
+
+        @foreach (ContactBatch contact in Model)
+        {
+            <tr>
+                <td>@contact.BatchName</td>
+                <td>@contact.CreatedBy</td>
+                <td>@contact.DateCreated</td>
+                <td>View | Update | Delete</td>
+            </tr>
+
+        }
+    </table>
+
+
+
+}

@@ -131,18 +131,32 @@ namespace UploadExcelFile.Controllers
             return View(contact);
         }
 
+        private string getBatchName()
+        {
+            string batchName;
+            var rand = new Random();
+            var newRand = rand.Next(100);
+            ContactBatch batch = new ContactBatch();
+            batchName = batch.BatchName = "Upload - " + newRand;
+
+            return batchName;
+        }
 
         [HttpGet]
         [WebMethod(EnableSession = true)]
         public ActionResult CreateContact()
         {
-            DateTime myDateTime = DateTime.Now;
-            string sqlformattedDate = myDateTime.ToString("yyyy-MM-dd hh:mm:ss.fff");
+            //DateTime myDateTime = DateTime.Now;
+            //string sqlformattedDate = myDateTime.ToString("yyyy-MM-dd hh:mm:ss.fff");
+
+            var batchName = getBatchName();
+
             ContactBatch batch = new ContactBatch
             {
-                BatchName = $"Upload" ,
+                BatchName = batchName,
                 CreatedBy = "System",
-                DateCreated = Convert.ToDateTime(sqlformattedDate)
+                DateCreated = DateTime.Now
+                //DateCreated = Convert.ToDateTime(sqlformattedDate)
             };
             int batchId = ContactDb.GetBatchID(batch);
             List<ContactVM> contacts = new List<ContactVM>();

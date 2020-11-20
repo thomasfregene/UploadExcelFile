@@ -8,7 +8,7 @@ using System.Web;
 
 namespace UploadExcelFile.Models
 {
-    public class ContactDb
+    public static class ContactDb
     {
         public static int GetBatchID(ContactBatch contactBatch)
         {
@@ -82,6 +82,30 @@ namespace UploadExcelFile.Models
             return batchID;
         }
 
+        public static List<ContactBatch> GetAllBatches()
+        {
+            string connString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            List<ContactBatch> contactBatches = new List<ContactBatch>();
+            using (SqlConnection con = new SqlConnection(connString))
+            {
+                SqlCommand cmd = new SqlCommand("spGetAllBatches", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        contactBatches.Add(new ContactBatch
+                        {
+                            BatchName = sdr["BatchName"].ToString(),
+                            DateCreated = Convert.ToDateTime(sdr["DateCreated"]),
+                            CreatedBy = sdr["CreatedBy"].ToString()
+                        });
+                    }
+                }
+            }
+            return contactBatches;
+        }
         public static void PostToDatabase(List<ContactVM> contacts, int batchId)
         {
             string connString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;

@@ -244,6 +244,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ContactBatchController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -295,6 +296,7 @@
     <Content Include="Views\Contacts\Error.cshtml" />
     <Content Include="Views\Contacts\New.cshtml" />
     <Content Include="Views\Contacts\CreateContact.cshtml" />
+    <Content Include="Views\ContactBatch\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\files\" />
