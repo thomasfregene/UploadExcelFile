@@ -97,6 +97,7 @@ namespace UploadExcelFile.Models
                     {
                         contactBatches.Add(new ContactBatch
                         {
+                            BatchID = Convert.ToInt32(sdr["BatchID"]),
                             BatchName = sdr["BatchName"].ToString(),
                             DateCreated = Convert.ToDateTime(sdr["DateCreated"]),
                             CreatedBy = sdr["CreatedBy"].ToString()
@@ -105,6 +106,42 @@ namespace UploadExcelFile.Models
                 }
             }
             return contactBatches;
+        }
+
+        public static List<ContactVM> GetContactsByBatchId(int id)
+        {
+            string connString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            List<ContactVM> contactVM = new List<ContactVM>();
+            using (SqlConnection con = new SqlConnection(connString))
+            {
+                SqlCommand cmd = new SqlCommand("spGetContactByBatches", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter paramBatchId = new SqlParameter
+                {
+                    ParameterName = "@BatchID",
+                    Value = id
+                };
+                cmd.Parameters.Add(paramBatchId);
+
+                con.Open();
+
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        contactVM.Add(new ContactVM
+                        {
+                            FirstName = sdr["FirstName"].ToString(),
+                            LastName = sdr["LastName"].ToString(),
+                            Email = sdr["Email"].ToString(),
+                            Telephone = sdr["Telephone"].ToString(),
+                            Mobile = sdr["Mobile"].ToString(),
+                            CompanyID = Convert.ToInt32(sdr["CompanyID"])
+                        });
+                    }
+                }
+            }
+            return contactVM;
         }
         public static void PostToDatabase(List<ContactVM> contacts, int batchId)
         {

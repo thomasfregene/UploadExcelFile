@@ -297,6 +297,8 @@
     <Content Include="Views\Contacts\New.cshtml" />
     <Content Include="Views\Contacts\CreateContact.cshtml" />
     <Content Include="Views\ContactBatch\Index.cshtml" />
+    <Content Include="Views\ContactBatch\GetFileById.cshtml" />
+    <Content Include="Views\ContactBatch\EditById.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\files\" />

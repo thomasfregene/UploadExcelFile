@@ -11,20 +11,30 @@
     <hr />
     <table class="table table-bordered">
         <tr>
+            <td>Batch ID</td>
             <td>Batch Name</td>
             <td>CreatedBy</td>
             <td>DateCreated</td>
             <td>Action</td>
-            
+
         </tr>
 
         @foreach (ContactBatch contact in Model)
         {
             <tr>
+                <td>@contact.BatchID</td>
                 <td>@contact.BatchName</td>
                 <td>@contact.CreatedBy</td>
                 <td>@contact.DateCreated</td>
-                <td>View | Update | Delete</td>
+                <td>
+                    <button class="btn btn-default">
+                        <span style="color:white"> @Html.ActionLink("View", "GetFileById", "ContactBatch", new { id = contact.BatchID}, null)</span>
+                    </button> | <button class="btn btn-default">
+                        @Html.ActionLink("Edit", "EditById", "ContactBatch", new { id = contact.BatchID }, null)
+                    </button> | <button class="btn btn-default">
+                        @Html.ActionLink("Delete", "DeleteById", "ContactBatch", new { id = contact.BatchID }, null)
+                    </button>
+                </td>
             </tr>
 
         }
