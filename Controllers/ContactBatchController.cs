@@ -16,7 +16,7 @@ namespace UploadExcelFile.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return View(ContactDb.GetAllBatches());
+            return View(ContactBatchDB.GetAllBatches());
         }
 
         [HttpGet]
@@ -29,6 +29,13 @@ namespace UploadExcelFile.Controllers
         public ActionResult EditById(int id)
         {
             return View(ContactDb.GetContactsByBatchId(id));
+        }
+
+        public ActionResult DeleteById(int id)
+        {
+            List<ContactVM> contactVM = new List<ContactVM>();
+            contactVM = ContactBatchDB.DeleteContactByBatchId(id);
+            return View(contactVM);
         }
     }
 

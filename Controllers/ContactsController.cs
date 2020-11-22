@@ -105,7 +105,7 @@ namespace UploadExcelFile.Controllers
 
                             //checking for Valid Company Id
                             //needs improvement
-                            if (contactVM.CompanyID != 7)
+                            if (contactVM.CompanyID != 7 && contactVM.CompanyID == null /*|| contactVM.CompanyID > 0*/)
                             {
                                 contactVM.Status = "Invalid";
                                 contactVM.Message = "CompanyID Field Must be same for All Entries";
@@ -121,6 +121,7 @@ namespace UploadExcelFile.Controllers
                 }
                 catch (Exception ex)
                 {
+                    //throw;
                     TempData["Message"] = "No File Chosen";
                     TempData["Message"] = "Something went wrong " + ex.Message;
                 }
@@ -158,7 +159,7 @@ namespace UploadExcelFile.Controllers
                 DateCreated = DateTime.Now
                 //DateCreated = Convert.ToDateTime(sqlformattedDate)
             };
-            int batchId = ContactDb.GetBatchID(batch);
+            int batchId = ContactBatchDB.GetBatchID(batch);
             List<ContactVM> contacts = new List<ContactVM>();
             contacts = (List<ContactVM>)Session["Upload"];
             ContactDb.PostToDatabase(contacts, batchId);

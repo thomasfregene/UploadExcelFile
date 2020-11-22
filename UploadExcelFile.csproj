@@ -252,6 +252,7 @@
     </Compile>
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\ContactBatch.cs" />
+    <Compile Include="Models\ContactBatchDB.cs" />
     <Compile Include="Models\ContactDb.cs" />
     <Compile Include="Models\ContactVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -299,6 +300,7 @@
     <Content Include="Views\ContactBatch\Index.cshtml" />
     <Content Include="Views\ContactBatch\GetFileById.cshtml" />
     <Content Include="Views\ContactBatch\EditById.cshtml" />
+    <Content Include="Views\ContactBatch\DeleteById.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\files\" />
