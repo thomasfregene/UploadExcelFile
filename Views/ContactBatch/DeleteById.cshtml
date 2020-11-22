@@ -1,8 +1,51 @@
-﻿
+﻿@using UploadExcelFile.Models
+@model List<ContactVM>
 @{
-    ViewBag.Title = "DeleteById";
+    ViewBag.Title = "GetFileById";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>DeleteById</h2>
+<h2>Batch Details</h2>
 
+@if (Model.Count() > 0)
+{
+    <hr />
+    <table class="table table-bordered">
+        <tr>
+            <td><strong>FirstName</strong></td>
+            <td><strong>LastName</strong></td>
+            <td><strong>Email</strong></td>
+            <td><strong>Telephone</strong></td>
+            <td><strong>Mobile</strong></td>
+            <td><strong>CompanyID</strong></td>
+        </tr>
+        @foreach (ContactVM contact in Model)
+        {
+            <tr>
+                <td>@contact.FirstName</td>
+                <td>@contact.LastName</td>
+                <td>@contact.Email</td>
+                <td>@contact.Telephone</td>
+                <td>@contact.Mobile</td>
+                <td>@contact.CompanyID</td>
+            </tr>
+        }
+    </table>
+}
+
+
+@{int batchId = 0;
+
+    foreach (ContactVM contactBatch in Model)
+    {
+        batchId = contactBatch.BatchID;
+    }
+
+    <button class="btn btn-default">
+        <span style="color:white">@Html.ActionLink("Delete Record", "DeletedBatchById", "ContactBatch", new { id = batchId }, null)</span>
+    </button>
+}
+
+<button class="btn btn-default">
+    <span style="color:white">@Html.ActionLink("Bact To Batches", "Index", "ContactBatch")</span>
+</button> 

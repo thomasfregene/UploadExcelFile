@@ -156,5 +156,36 @@ namespace UploadExcelFile.Models
 
             return contactVM;
         }
+
+        public static void DeleteFileByBatchId(int id)
+        {
+            string connString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(connString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("spDeleteFileByBatchId", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlParameter paramBatchId = new SqlParameter
+                    {
+                        ParameterName = "@BatchID",
+                        Value = id
+                    };
+                    cmd.Parameters.Add(paramBatchId);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+
+        }
     }
 }
