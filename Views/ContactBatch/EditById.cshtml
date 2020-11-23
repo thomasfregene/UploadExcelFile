@@ -23,12 +23,12 @@
         @foreach (ContactVM contact in Model)
         {
             <tr>
-                <td><input value="@contact.FirstName" readonly/> </td> 
-                <td><input value="@contact.LastName" readonly/> </td>
-                <td><input value="@contact.Email" /> </td>
-                <td><input value="@contact.Telephone" /></td>
-                <td><input value="@contact.Mobile" /> </td>
-                <td><input value="@contact.CompanyID" readonly/> </td>
+                <td>@Html.DisplayFor(contactvm => contact.FirstName)</td> 
+                <td>@Html.DisplayFor(contactvm => contact.LastName)</td>
+                <td>@Html.DisplayFor(contactvm => contact.Email)</td>
+                <td>@Html.DisplayFor(contactvm => contact.Telephone)</td>
+                <td>@Html.DisplayFor(contactvm => contact.FirstName)</td>
+                <td>@Html.DisplayFor(contactvm => contact.FirstName)</td>
             </tr>
 
         }
