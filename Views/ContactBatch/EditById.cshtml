@@ -23,7 +23,7 @@
         @foreach (ContactVM contact in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(contactvm => contact.FirstName)</td> 
+                <td>@Html.DisplayFor(contactvm => contact.FirstName)</td>
                 <td>@Html.DisplayFor(contactvm => contact.LastName)</td>
                 <td>@Html.DisplayFor(contactvm => contact.Email)</td>
                 <td>@Html.DisplayFor(contactvm => contact.Telephone)</td>
@@ -34,9 +34,6 @@
         }
     </table>
 }
-<form asp-controller="ContactBatch" asp-action="EditById" method="Post" enctype="multipart/form-data">
-    <div>
-        <input type="submit" value="Update" class="btn btn-block btn-primary" />
-    </div>
-
-</form>
+<button class="btn btn-default">
+    <span style="color:white"> @Html.ActionLink("Re-Upload", "ReUploadBatch", "ContactBatch") </span>
+</button>

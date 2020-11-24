@@ -108,6 +108,44 @@ namespace UploadExcelFile.Models
             return contactBatches;
         }
 
+        //Edit
+        public static List<ContactVM> EditContactsByBatchId(int id)
+        {
+            string connString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            List<ContactVM> contactVM = new List<ContactVM>();
+            using (SqlConnection con = new SqlConnection(connString))
+            {
+                SqlCommand cmd = new SqlCommand("spGetContactByBatches", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter paramBatchId = new SqlParameter
+                {
+                    ParameterName = "@BatchID",
+                    Value = id
+                };
+                cmd.Parameters.Add(paramBatchId);
+
+                con.Open();
+
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        contactVM.Add(new ContactVM
+                        {
+                            FirstName = sdr["FirstName"].ToString(),
+                            LastName = sdr["LastName"].ToString(),
+                            Email = sdr["Email"].ToString(),
+                            Telephone = sdr["Telephone"].ToString(),
+                            Mobile = sdr["Mobile"].ToString(),
+                            CompanyID = Convert.ToInt32(sdr["CompanyID"]),
+                            BatchID = Convert.ToInt32(sdr["BatchID"])
+                        });
+                    }
+                }
+            }
+            return contactVM;
+        }
+
         public static List<ContactVM> DeleteContactByBatchId(int id)
         {
             string connString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
@@ -186,6 +224,129 @@ namespace UploadExcelFile.Models
                 }
             }
 
+        }
+
+        //Delete Existing records before Updating by Batch Id
+        private static void DeleteByBatchId(int batchId)
+        {
+            string connString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(connString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("spDeleteBeforeInsert", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlParameter paramBatchID = new SqlParameter
+                    {
+                        ParameterName = "@BatchID",
+                        Value = batchId
+                    };
+                    cmd.Parameters.Add(paramBatchID);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+        }
+        public static void UpdateContactByBatchId(List<ContactVM> contacts, int batchId)
+        {
+            string connString = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(connString))
+            {
+                
+                try
+                {
+                    DeleteByBatchId(batchId);
+                    foreach (ContactVM contact in contacts)
+                    {
+
+                        SqlCommand cmd = new SqlCommand("spUpdateContactByBatchId", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlParameter paramFirstName = new SqlParameter
+                        {
+                            ParameterName = "@FirstName",
+                            Value = contact.FirstName
+                        };
+                        cmd.Parameters.Add(paramFirstName);
+
+                        SqlParameter paramLastName = new SqlParameter
+                        {
+                            ParameterName = "@LastName",
+                            Value = contact.LastName
+                        };
+                        cmd.Parameters.Add(paramLastName);
+
+                        SqlParameter paramEmail = new SqlParameter
+                        {
+                            ParameterName = "@Email",
+                            Value = contact.Email
+                        };
+                        cmd.Parameters.Add(paramEmail);
+
+                        SqlParameter paramTelephone = new SqlParameter
+                        {
+                            ParameterName = "@Telephone",
+                            Value = contact.Telephone
+                        };
+                        cmd.Parameters.Add(paramTelephone);
+
+                        SqlParameter paramMobile = new SqlParameter
+                        {
+                            ParameterName = "@Mobile",
+                            Value = contact.Mobile
+                        };
+                        cmd.Parameters.Add(paramMobile);
+
+                        SqlParameter paramCompanyID = new SqlParameter
+                        {
+                            ParameterName = "@CompanyID",
+                            Value = contact.CompanyID
+                        };
+                        cmd.Parameters.Add(paramCompanyID);
+
+                        SqlParameter paramBatchID = new SqlParameter
+                        {
+                            ParameterName = "@BatchID",
+                            Value = batchId
+                        };
+                        cmd.Parameters.Add(paramBatchID);
+
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                    //cmdDelete.ExecuteNonQuery();
+                
+                    //transaction.Commit();
+                }
+                catch (Exception)
+                {
+
+                    throw; //transaction.Rollback();
+                }
+                finally
+                {
+                    if (con.State == ConnectionState.Open)
+                    {
+                        con.Close();
+                    }
+                }
+
+            }
         }
     }
 }

@@ -31,12 +31,20 @@ namespace UploadExcelFile.Controllers
         public ActionResult EditById(int id)
         {
             List<ContactVM> contactVM = new List<ContactVM>();
-            contactVM = ContactDb.GetContactsByBatchId(id);
-            Session["BatchId"] = ContactDb.GetContactsByBatchId(id);
+            contactVM = ContactBatchDB.EditContactsByBatchId(id);
+            Session["BatchId"] = ContactBatchDB.EditContactsByBatchId(id);
             return View(contactVM);
             //return View(ContactDb.GetContactsByBatchId(id));
         }
 
+        //Edit
+        [HttpGet]
+        public ActionResult ReUploadBatch()
+        {
+            return View(new List<ContactVM>());
+        }
+
+        //Edit
         [HttpPost]
         [WebMethod(EnableSession = true)]
         public ActionResult ReUploadBatch(HttpPostedFileBase postedFile)
@@ -124,6 +132,29 @@ namespace UploadExcelFile.Controllers
             return View(contact);
         }
 
+        //Edit
+        [HttpGet]
+        [WebMethod(EnableSession = true)]
+        public ActionResult UpdateByBatchId(ContactVM contactVM)
+        {
+            int batchID = 0;
+            List<ContactVM> batchId = new List<ContactVM>();
+            batchId = (List<ContactVM>)Session["BatchId"];
+            foreach (ContactVM contactsBatch in batchId)
+            {
+                batchID = contactsBatch.BatchID;
+            }
+
+            //Session object
+            List<ContactVM> contacts = new List<ContactVM>();
+            contacts = (List<ContactVM>)Session["ReUploadBatch"];
+
+            ContactBatchDB.UpdateContactByBatchId(contacts, batchID);
+
+            return View();
+        }
+
+        //Delete
         [HttpGet]
         public ActionResult DeleteById(int id)
         {
@@ -132,7 +163,13 @@ namespace UploadExcelFile.Controllers
             return View(contactVM);
         }
 
-        [HttpPost]
+        //[HttpGet]
+        //public ActionResult DeletedBatchById()
+        //{
+        //    return View();
+        //}
+
+        [HttpGet]
         public ActionResult DeletedBatchById(int id)
         {
             ContactBatchDB.DeleteFileByBatchId(id);

@@ -12,6 +12,7 @@
     <hr />
     <table class="table table-bordered">
         <tr>
+            <td>Batch ID</td>
             <td><strong>FirstName</strong></td>
             <td><strong>LastName</strong></td>
             <td><strong>Email</strong></td>
@@ -22,6 +23,7 @@
         @foreach (ContactVM contact in Model)
         {
             <tr>
+                <td>@contact.BatchID</td>
                 <td>@contact.FirstName</td>
                 <td>@contact.LastName</td>
                 <td>@contact.Email</td>

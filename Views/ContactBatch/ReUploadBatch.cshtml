@@ -1,8 +1,88 @@
-﻿
+﻿@using UploadExcelFile.Models
+@model IEnumerable<ContactVM>
 @{
-    ViewBag.Title = "ReUploadBatch";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ReUploadBatch</h2>
+<h3 style="color: red;"><strong>@TempData["Message"]</strong></h3>
+<h3 style="color: green;"><strong>@TempData["Message2"]</strong></h3>
 
+@{
+    string display = "Valid";
+
+    bool displayImport = true;
+}
+
+@if (Model.Count() > 0)
+{
+    <hr />
+    <table class="table table-bordered" cellpadding="0" cellspacing="0" border="1">
+        <tr>
+            <td><strong>FirstName</strong></td>
+            <td><strong>LastName</strong></td>
+            <td><strong>Email</strong></td>
+            <td><strong>Telephone</strong></td>
+            <td><strong>Mobile</strong></td>
+            <td><strong>CompanyID</strong></td>
+            <td><strong>Status</strong></td>
+            <td><strong>Message</strong></td>
+        </tr>
+        @foreach (ContactVM contact in Model)
+        {
+            <tr>
+                <td>@contact.FirstName</td>
+                <td>@contact.LastName</td>
+                <td>@contact.Email</td>
+                <td>@contact.Telephone</td>
+                <td>@contact.Mobile</td>
+                <td>@contact.CompanyID</td>
+                <td>@contact.Status</td>
+                <td style="color:red">@contact.Message</td>
+
+            </tr>
+        }
+
+    </table>
+
+    foreach (ContactVM conntact in Model)
+    {
+
+        display = conntact.Status;
+    }
+
+    if (display != "Invalid")
+    {
+        <button class="btn btn-default">
+            @Html.ActionLink("Submit", "UpdateByBatchId", "ContactBatch")
+        </button>
+
+        displayImport = false;
+    }
+
+
+}
+
+
+<form asp-controller="ContactBatch" asp-action="ReUploadBatch" method="Post" enctype="multipart/form-data">
+
+    @if (displayImport == true)
+    {
+        <input class="form-control" type="file" name="postedFile" />
+        <hr />
+        <input type="submit" value="Validate" class="btn btn-primary" />
+        // display = "Valid";
+
+    }
+    @if (display == "Invalid")
+    {
+        <h3 style="color:red">Please fill missing field and re-import file</h3>
+    }
+
+
+</form>
+<br />
+
+<br />
+<button class="btn btn-default">
+    <span style="color:white">@Html.ActionLink("Back To Batches", "Index", "ContactBatch")</span>
+</button>
